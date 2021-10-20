@@ -1,12 +1,16 @@
-import com.slack.api.model.block.Blocks.{actions, context}
+import com.slack.api.model.block.Blocks.{actions, context, section}
 import com.slack.api.model.block.composition.BlockCompositions.{asOptions, markdownText, plainText}
 import com.slack.api.model.block.composition.OptionObject
 import com.slack.api.model.block.element.BlockElements.{asContextElements, asElements, staticSelect}
-import com.slack.api.model.block.{ActionsBlock, ContextBlock}
+import com.slack.api.model.block.{ActionsBlock, ContextBlock, LayoutBlock}
 
-trait Functions {
+trait SlackBlocks {
+  def sectionWithMarkdown(text: String): LayoutBlock = {
+    section(_.text(markdownText(text)))
+  }
+
   def statusChange(statusBefore: String, statusAfter: String): ContextBlock = {
-    context((context: ContextBlock.ContextBlockBuilder) => context
+    context((_: ContextBlock.ContextBlockBuilder)
       .elements(asContextElements(
         markdownText(s"$statusBefore :arrow_right: $statusAfter")
       ))
@@ -20,9 +24,9 @@ trait Functions {
         .build()
     }
 
-    actions((actions: ActionsBlock.ActionsBlockBuilder) => actions
+    actions((_: ActionsBlock.ActionsBlockBuilder)
       .elements(asElements(
-        staticSelect(select => select
+        staticSelect(_
           .placeholder(plainText("Tasks"))
           .options(asOptions(
             taskList.map(buildOption): _*
