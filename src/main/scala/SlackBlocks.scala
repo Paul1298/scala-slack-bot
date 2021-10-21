@@ -10,10 +10,8 @@ trait SlackBlocks {
   }
 
   def statusChange(statusBefore: String, statusAfter: String): ContextBlock = {
-    context((_: ContextBlock.ContextBlockBuilder)
-      .elements(asContextElements(
-        markdownText(s"$statusBefore :arrow_right: $statusAfter")
-      ))
+    context(asContextElements(
+      markdownText(s"$statusBefore :arrow_right: $statusAfter"))
     )
   }
 
@@ -24,13 +22,12 @@ trait SlackBlocks {
         .build()
     }
 
-    actions((_: ActionsBlock.ActionsBlockBuilder)
-      .elements(asElements(
-        staticSelect(_
-          .placeholder(plainText("Tasks"))
-          .options(asOptions(
-            taskList.map(buildOption): _*
-          )))
-      )))
+    actions(asElements(
+      staticSelect(_
+        .placeholder(plainText("Tasks"))
+        .options(asOptions(
+          taskList.map(buildOption): _*
+        )))
+    ))
   }
 }
