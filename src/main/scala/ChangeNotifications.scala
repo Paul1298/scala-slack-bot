@@ -5,12 +5,10 @@ import com.slack.api.model.User
 import com.slack.api.model.block.Blocks.asBlocks
 import com.slack.api.model.block.LayoutBlock
 
-import java.util.{List => JList}
-
 trait ChangeNotifications {
   def notificationMessage(caption: String): String
 
-  def messageContext(methodsClient: MethodsClient, caption: String): List[LayoutBlock]
+  def messageContext(methodsClient: MethodsClient, caption: String, captionLink: String): List[LayoutBlock]
 
   def lookupByEmail(methodsClient: MethodsClient, userEmail: String): User = {
     val request = UsersLookupByEmailRequest.builder()
@@ -27,12 +25,12 @@ trait ChangeNotifications {
     }
   }
 
-  def sendMessage(methodsClient: MethodsClient, receiverEmail: String, caption: String): Unit = {
+  def sendMessage(methodsClient: MethodsClient, receiverEmail: String, caption: String, captionLink: String): Unit = {
     val request = ChatPostMessageRequest
       .builder()
       .channel(lookupByEmail(methodsClient, receiverEmail).getId)
-      .text(notificationMessage(caption)) // notification message
-      .blocks(asBlocks(messageContext(methodsClient, caption): _*))
+      .text(notificationMessage(caption))
+      .blocks(asBlocks(messageContext(methodsClient, caption, captionLink): _*))
       .build()
 
     methodsClient.chatPostMessage(request)

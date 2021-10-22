@@ -1,8 +1,7 @@
-import com.slack.api.model.block.Blocks.{actions, context, section}
-import com.slack.api.model.block.composition.BlockCompositions.{asOptions, markdownText, plainText}
-import com.slack.api.model.block.composition.OptionObject
-import com.slack.api.model.block.element.BlockElements.{asContextElements, asElements, staticSelect}
-import com.slack.api.model.block.{ActionsBlock, ContextBlock, LayoutBlock}
+import com.slack.api.model.block.Blocks.{context, section}
+import com.slack.api.model.block.composition.BlockCompositions.{markdownText, plainText}
+import com.slack.api.model.block.element.BlockElements.asContextElements
+import com.slack.api.model.block.{ContextBlock, LayoutBlock}
 
 trait SlackBlocks {
   def sectionWithMarkdown(text: String): LayoutBlock = {
@@ -15,19 +14,9 @@ trait SlackBlocks {
     )
   }
 
-  def taskListAsSelectMenu(taskList: List[String]): ActionsBlock = {
-    def buildOption(text: String): OptionObject = {
-      OptionObject.builder()
-        .text(plainText(text))
-        .build()
-    }
-
-    actions(asElements(
-      staticSelect(_
-        .placeholder(plainText("Tasks"))
-        .options(asOptions(
-          taskList.map(buildOption): _*
-        )))
+  def taskBulletedList(taskList: List[String]): LayoutBlock = {
+    section(_.text(
+      plainText(taskList.map("• " ++ _ ++ "\n").mkString)
     ))
   }
 }

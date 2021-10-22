@@ -8,8 +8,8 @@ object Main extends App {
   val receiverEmail = "poul1298@gmail.com"
   val authorEmail = "poul1298@gmail.com"
 
-  TaskStatusChangeNotification(authorEmail, "Before", "After").sendMessage(methodsClient, receiverEmail, "caption")
-  TasksCompletedNotification(List("1", "2", "3", "4")).sendMessage(methodsClient, receiverEmail, "caption")
-  NewAssigneeNotification(authorEmail).sendMessage(methodsClient, receiverEmail, "caption")
+//  TaskStatusChangeNotification(authorEmail, "Before", "After").sendMessage(methodsClient, receiverEmail, "caption", "capLink.com")
+  TasksCompletedNotification(List("1", "2", "3", "4")).sendMessage(methodsClient, receiverEmail, "caption", "capLink")
+//  NewAssigneeNotification(authorEmail).sendMessage(methodsClient, receiverEmail, "caption", "capLink")
 
 }
